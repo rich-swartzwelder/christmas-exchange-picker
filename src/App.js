@@ -1,4 +1,6 @@
 import React from "react";
+import firebase from "./firebase";
+import { firestore } from "./firebase";
 
 function App() {
   return (
