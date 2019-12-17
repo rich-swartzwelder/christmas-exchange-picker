@@ -4,22 +4,20 @@ import firebase from "./firebase";
 function App() {
   const [users, setUsers] = useState([]);
   const [newUserName, setNewUserName] = useState([]);
-  // const [userToDelete, setUserToDelete] = useState([]);
+
+  // const unsubscribe = null;
 
   useEffect(() => {
-    const getUsers = async () => {
-      const db = firebase.firestore();
-      db.collection("users").onSnapshot(snapshot => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection("users")
+      .onSnapshot(snapshot => {
         const users = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
         setUsers(users);
       });
 
-      // const data = await db.collection("users").get();
-      // setUsers(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-    };
-    getUsers();
+    return () => unsubscribe();
   }, []);
-  // end useEffect
 
   const addNewUser = () => {
     const db = firebase.firestore();
