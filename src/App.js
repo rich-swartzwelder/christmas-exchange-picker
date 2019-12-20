@@ -9,16 +9,16 @@ import Grid from "@material-ui/core/Grid";
 import MemberList from "./components/MemberList";
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [newUserName, setNewUserName] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [newMemberName, setNewMemberName] = useState([]);
 
   useEffect(() => {
     const unsubscribe = firebase
       .firestore()
-      .collection("users")
+      .collection("members")
       .onSnapshot(snapshot => {
-        const users = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setUsers(users);
+        const members = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setMembers(members);
       });
 
     return () => unsubscribe();
@@ -26,10 +26,10 @@ function App() {
 
   const addNewMember = () => {
     const db = firebase.firestore();
-    const ref = db.collection("users").doc();
-    db.collection("users").add({ firstName: newUserName, id: ref.id });
+    const ref = db.collection("members").doc();
+    db.collection("members").add({ firstName: newMemberName, id: ref.id });
     const resetForm = () => {
-      setNewUserName("");
+      setNewMemberName("");
     };
     resetForm();
   };
@@ -42,7 +42,7 @@ function App() {
   const deleteMember = id => {
     firebase
       .firestore()
-      .collection("users")
+      .collection("members")
       .doc(id)
       .delete();
   };
@@ -57,8 +57,8 @@ function App() {
             <Grid item>
               <TextField
                 label="New member"
-                value={newUserName}
-                onChange={e => setNewUserName(e.target.value)}
+                value={newMemberName}
+                onChange={e => setNewMemberName(e.target.value)}
               />
             </Grid>
             <Grid item>
@@ -82,7 +82,7 @@ function App() {
             </li>
           ))}
         </ul> */}
-        <MemberList members={users} onDelete={deleteMember} />
+        <MemberList members={members} onDelete={deleteMember} />
       </Container>
     </div>
   );
