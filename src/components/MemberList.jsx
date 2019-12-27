@@ -18,8 +18,6 @@ export default function MemberList({ members, onDelete }) {
               <IconButton onClick={() => onDelete(member.id)}>
                 <DeleteIcon
                   size="small"
-                  // color="secondary"
-                  
                 />
               </IconButton>
             </ListItem>
